@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Cricket Scores</title>
+  </head>
+  <body>
+    <h1>Live Cricket Scores</h1>
+    <ul id="scores-list"></ul>
+
+    <script>
+      const socket = new WebSocket('ws://localhost:3000');
+
+      socket.onmessage = (event) => {
+        const scores = JSON.parse(event.data);
+        const scoresList = document.getElementById('scores-list');
+        scoresList.innerHTML = '';
+
+        scores.forEach((score) => {
+          const listItem = document.createElement('li');
+          listItem.textContent = `${score.team1} vs. ${score.team2}: ${score.score}`;
+          scoresList.appendChild(listItem);
+        });
+      };
+    </script>
+  </body>
+</html>
